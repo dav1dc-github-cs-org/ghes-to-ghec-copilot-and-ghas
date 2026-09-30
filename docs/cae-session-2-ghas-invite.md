@@ -80,10 +80,10 @@ than administrators — no licensing and no admin console.
 | | |
 |---|---|
 | The same product on both platforms | 2 min |
-| The three pillars: dependency scanning, code scanning and secret scanning | 12 min |
+| The three pillars: dependency scanning, code scanning and secret scanning | 11 min |
 | Is it on? Checking your repository in three steps | 6 min |
 | Turning it on — and who to ask when you can't | 6 min |
-| Wrap-up, and questions before the split | 4 min |
+| Wrap-up, and questions before the split | 5 min |
 
 **Part 2 — GitHub.com (Blue) only · [split]–[end] ET**
 
@@ -121,8 +121,10 @@ than administrators — no licensing and no admin console.
 
 - No preparation needed, and nothing to install.
 - The session is recorded, so it's fine if you can't make the time.
-- Leaving at the half? Put your questions in the meeting chat. They'll be
-  answered there at the end, so you can read the answers without staying.
+- Leaving at the half? There's time for questions just before the split.
+  After that, put them in the meeting chat, where they'll be answered at the
+  end so you can read the answers without staying, or message Kevin Cheung
+  directly in Teams.
 - **GHAS office hours follow in November** — an open session for the
   questions that come up once you've tried this on your own repositories.
   Save them up; that's what it's for.
@@ -160,6 +162,8 @@ than administrators — no licensing and no admin console.
   "Vehicle".
 - **The chat-questions line is a promise.** It sets up segment 5's dismissal
   and segment 10's loop-close, so agree beforehand who writes the answers.
+  Messaging Kevin directly is his own offer, from 30 September. If he sends
+  from his own calendar, *"message me directly"* reads better.
 - **Housekeeping, as for session 1.** Put the sent title on the title slide
   and the recording — both recordings, if it splits. Offer a French version.
   Expect CAE's export-control footer again; every demo stays in the sandbox.

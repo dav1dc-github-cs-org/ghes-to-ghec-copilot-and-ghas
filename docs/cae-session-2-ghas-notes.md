@@ -47,10 +47,10 @@ everyone, and Part 2 spends its half hour on what only GitHub.com has.
 | # | Segment | Min |
 |---|---|---|
 | 1 | The same product on both | 2 |
-| 2 | The three pillars | 12 |
+| 2 | The three pillars | 11 |
 | 3 | Is it on? The check, steps 1–3 | 6 |
 | 4 | Turning it on — who owns what | 6 |
-| 5 | Black's wrap-up, and the split | 4 |
+| 5 | Black's wrap-up, questions and the split | 5 |
 
 **Part 2 — Blue only (30 min)**
 
@@ -98,12 +98,13 @@ Open with the honest line, reworded for a mixed room:
 > to most of you because on-prem had no GHAS until this September — not
 > because either platform invented it. For the next half hour, everything we
 > show works on both. At [split time] we split: the second half is about what
-> GitHub.com adds, so if you're on Black, you're free to go then."*
+> GitHub.com adds, so if you're on Black, you're free to go then. There's time
+> for questions just before the split."*
 
 **Say the split time out loud, and put it in the invite**, so Black developers
 can plan for half an hour rather than an hour.
 
-## 2 — The three pillars (12 min)
+## 2 — The three pillars (11 min)
 
 Kevin's "what it does" and "why it should be on", under the three names his
 team uses.
@@ -212,7 +213,7 @@ then shrinks to the bullets and the table.
 > Black handles that. This is question 1 for Kevin. If something won't be
 > live, say so plainly, with his date for it if he has one.
 
-## 5 — Black's wrap-up, and the split (4 min)
+## 5 — Black's wrap-up, questions and the split (5 min)
 
 For Black developers this is the end of the session, so close it properly.
 
@@ -227,16 +228,26 @@ come up while you try this. That is what November is for. ⚠️ Say it to Black
 only once Kevin confirms they're welcome at November's GHAS office hours — see
 **Where developers take GHAS problems**.
 
-**Take Black's questions live, before the split.** Hold two minutes for them.
-Anything left over goes in the chat or to Kevin, and gets answered in the chat
-at the end, so Black developers can read the answers without staying.
+**Take questions live, just before the split — three minutes.** Kevin asked on
+30 September to "give a brief moment for questions right before the split,
+allocate a few mins, then any other questions can be sent in the chat or DMed
+to me". Segment 2 gave up a minute to make it three, so park longer questions
+from segments 2 to 4 here. Take Black's first, since they leave at the split.
+Keep every answer to Part 1: anything about what GitHub.com adds gets
+rule 2's one line, and anything about Black's own rollout — what's on, and
+when — goes to Kevin. Stop on time, because the split time is a promise to
+Black.
+
+After that, questions go in the meeting chat, where they're answered at the
+end so Black developers can read the answers without staying, or to Kevin as
+a direct message in Teams.
 
 Then Kevin's dismissal line, adapted:
 
 > *"That's everything that applies to Black. If you're on Black — on-prem —
-> you're free to go. Leave any questions with Kevin or in the chat, and I'll
-> answer them there at the end. If you're on Blue, stay: the next half hour is
-> what GitHub.com adds."*
+> you're free to go. Any other questions, put them in the chat and I'll answer
+> them there at the end, or message Kevin directly. If you're on Blue, stay:
+> the next half hour is what GitHub.com adds."*
 
 > ⚠️ **Split the recording here.** Stop it at the split and start a new one
 > for Part 2, so Black's recording is Part 1 alone and holds nothing Black
@@ -414,7 +425,8 @@ Three things before GHAS office hours in November:
 
 **Close the loop with Black.** Post the answers to their chat questions, as
 promised at the split. Agree beforehand who writes them up — Kevin during
-Part 2, or you straight after.
+Part 2, or you straight after. Direct messages to Kevin are his to answer, or
+to pass on to you.
 
 Then the champions ask. **Say the office-hours rule again:** save the
 questions that come up while you try this. That is what November is for.
