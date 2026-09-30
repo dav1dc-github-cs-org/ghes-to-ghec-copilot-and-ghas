@@ -1,0 +1,9 @@
+XFSB ILS RWY 09 — training chart notes (fictional, not for navigation)
+
+Localizer      IXFB 109.70   inbound course 090°
+Glideslope     3.0°          threshold crossing height 52 ft
+Final approach fix  MORVA    4.8 NM from threshold, 1600 ft
+Decision altitude   DA 410 ft (200 ft above touchdown)
+Missed approach     Climb to 2500 ft on runway heading, then as directed.
+
+Runway 09: 2100 m x 45 m, touchdown zone elevation 210 ft.

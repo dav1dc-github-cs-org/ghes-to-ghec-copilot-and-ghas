@@ -1,0 +1,94 @@
+// Jenkins pipeline for flight-sim-platform.
+// Runs on the training-network Jenkins (Linux agents labelled 'fsim-build'). Dependencies are
+// resolved and artefacts published through Artifactory. Owned by platform engineering.
+pipeline {
+    agent { label 'fsim-build' }
+
+    options {
+        timestamps()
+        timeout(time: 60, unit: 'MINUTES')
+        buildDiscarder(logRotator(numToKeepStr: '30'))
+    }
+
+    environment {
+        GHE_API_URL    = 'https://github-black.sim.example/api/v3'
+        REPO_SLUG      = 'flightsim/flight-sim-platform'
+        MAVEN_SETTINGS = 'ci/jenkins-settings.xml'
+        PIP_INDEX_URL  = 'https://artifactory.sim.example/artifactory/api/pypi/pypi-remote/simple'
+    }
+
+    stages {
+        stage('Checkout') {
+            steps {
+                checkout([$class: 'GitSCM',
+                    branches: [[name: env.BRANCH_NAME ?: 'main']],
+                    userRemoteConfigs: [[
+                        url: 'https://github-black.sim.example/flightsim/flight-sim-platform.git',
+                        credentialsId: 'ghe-black-ci-token'
+                    ]],
+                    extensions: [[$class: 'GitLFSPull']]
+                ])
+            }
+        }
+
+        stage('Java build and unit tests') {
+            steps {
+                sh './mvnw -B -ntp -s "$MAVEN_SETTINGS" verify'
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: '**/target/surefire-reports/*.xml'
+                }
+            }
+        }
+
+        stage('QTG tools') {
+            steps {
+                dir('python/qtg-tools') {
+                    sh '''
+                        python3 -m venv .venv
+                        . .venv/bin/activate
+                        pip install --index-url "$PIP_INDEX_URL" -r requirements-dev.txt
+                        python -m pytest -q --junitxml=target/pytest.xml
+                    '''
+                }
+            }
+            post {
+                always {
+                    junit allowEmptyResults: true, testResults: 'python/qtg-tools/target/pytest.xml'
+                }
+            }
+        }
+
+        stage('SPL') {
+            when { branch 'main' }
+            steps {
+                sh 'scripts/spl-package.sh'
+            }
+        }
+
+        stage('Publish') {
+            when { branch 'main' }
+            steps {
+                sh './mvnw -B -ntp -s "$MAVEN_SETTINGS" -DskipTests deploy'
+            }
+        }
+    }
+
+    post {
+        always {
+            script {
+                def state = currentBuild.currentResult == 'SUCCESS' ? 'success' : 'failure'
+                withCredentials([string(credentialsId: 'ghe-black-ci-token', variable: 'GHE_TOKEN')]) {
+                    sh """
+                        curl -fsS -X POST \\
+                          -H "Authorization: token \$GHE_TOKEN" \\
+                          -H "Accept: application/vnd.github+json" \\
+                          "${env.GHE_API_URL}/repos/${env.REPO_SLUG}/statuses/${env.GIT_COMMIT}" \\
+                          -d '{"state": "${state}", "context": "jenkins/fsim-build", "target_url": "${env.BUILD_URL}"}'
+                    """
+                }
+            }
+        }
+    }
+}

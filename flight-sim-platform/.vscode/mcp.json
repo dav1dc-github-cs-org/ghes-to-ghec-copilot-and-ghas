@@ -1,0 +1,11 @@
+{
+  "servers": {
+    "github": {
+      "type": "http",
+      "url": "https://api.githubcopilot.com/mcp/",
+      "headers": {
+        "X-MCP-Toolsets": "context,repos,issues,pull_requests,users,code_security,secret_protection,dependabot,copilot"
+      }
+    }
+  }
+}

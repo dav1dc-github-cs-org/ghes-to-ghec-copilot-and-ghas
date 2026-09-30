@@ -1,0 +1,12 @@
+# Keeps the SHA-pinned GitHub Actions current. Maven and pip security updates are raised by
+# Dependabot security updates (repository setting), not version updates.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      github-actions:
+        patterns:
+          - "*"

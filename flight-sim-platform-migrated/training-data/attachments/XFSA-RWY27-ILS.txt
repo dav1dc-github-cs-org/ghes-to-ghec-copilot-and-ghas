@@ -1,0 +1,10 @@
+XFSA ILS RWY 27 — training chart notes (fictional, not for navigation)
+
+Localizer      IXFA 110.30   inbound course 270°
+Glideslope     3.0°          threshold crossing height 50 ft
+DME            IXFA          co-located with the glideslope
+Final approach fix  FASEN    5.2 NM from threshold, 1700 ft
+Decision altitude   DA 330 ft (200 ft above touchdown)
+Missed approach     Climb straight ahead to 2000 ft, then turn right to FASEN and hold.
+
+Runway 27: 2400 m x 45 m, touchdown zone elevation 130 ft.

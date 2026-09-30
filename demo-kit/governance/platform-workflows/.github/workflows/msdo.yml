@@ -1,0 +1,27 @@
+name: Microsoft Security DevOps
+
+# Required workflow for the product-line ruleset. Results are not uploaded to code scanning.
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  security-events: write
+
+jobs:
+  msdo:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+
+      - name: Run Microsoft Security DevOps
+        id: msdo
+        uses: microsoft/security-devops-action@08976cb623803b1b36d7112d4ff9f59eae704de0 # v1.12.0
+
+      # Uncomment to publish the results in code scanning.
+      # - name: Upload results to code scanning
+      #   uses: github/codeql-action/upload-sarif@2892aa5e19bbd11bc0cff5427e3b750a04d9e3c2 # v4.38.2
+      #   with:
+      #     sarif_file: ${{ steps.msdo.outputs.sarifFile }}

@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{{ result.test_id }} {{ result.title }} Report</title>
+  </head>
+  <body>
+    <h1>{{ result.test_id }} {{ result.title }}</h1>
+    <p>
+      Overall result:
+      <strong>{% if result.passed %}PASS{% else %}FAIL{% endif %}</strong>
+    </p>
+    <p>Reference: {{ result.reference_path }}</p>
+    <p>Candidate: {{ result.candidate_path }}</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Channel</th>
+          <th>Max absolute error</th>
+          <th>Limit at max error</th>
+          <th>Time</th>
+          <th>Tolerance</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for channel in result.channels %}
+        <tr>
+          <td>{{ channel.name }}</td>
+          <td>{{ "%.6f"|format(channel.max_abs_error) }} {{ channel.unit }}</td>
+          <td>{{ "%.6f"|format(channel.limit_at_max_error) }} {{ channel.unit }}</td>
+          <td>{{ "%.2f"|format(channel.time_at_max_error) }} s</td>
+          <td>{{ channel.tolerance }}</td>
+          <td>{% if channel.passed %}PASS{% else %}FAIL{% endif %}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flightsim-qtg-tools"
+version = "4.12.0.dev0"
+description = "Qualification Test Guide comparison tools for the FS-200 training simulator"
+readme = "README.md"
+requires-python = ">=3.10"
+authors = [
+  { name = "FS-200 Simulator Engineering" }
+]
+
+[project.scripts]
+qtg = "qtg.cli:main"
+
+[project.urls]
+Repository = "https://github-black.sim.example/flightsim/flight-sim-platform"
+Documentation = "https://github-black.sim.example/pages/flightsim/qtg-tools/"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.setuptools.package-data]
+"qtg.viewer" = ["templates/*.html"]
+
+[tool.pytest.ini_options]
+pythonpath = ["src"]
+testpaths = ["tests"]
+# The pinned Flask/Werkzeug predate Python 3.12's ast deprecations.
+filterwarnings = [
+  "ignore::DeprecationWarning:werkzeug.*",
+  "ignore::DeprecationWarning:flask.*",
+  "ignore::DeprecationWarning:ast",
+]

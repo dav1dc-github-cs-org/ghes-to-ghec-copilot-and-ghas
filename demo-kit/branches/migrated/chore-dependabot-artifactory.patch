@@ -1,0 +1,25 @@
+diff --git a/.github/dependabot.yml b/.github/dependabot.yml
+new file mode 100644
+index 0000000..5c87348
+--- /dev/null
++++ b/.github/dependabot.yml
+@@ -0,0 +1,19 @@
++# Dependabot version updates for the Java build.
++# Our Maven artefacts that are not on Maven Central come from Artifactory, so Dependabot
++# signs in to it. The credentials are Dependabot secrets (Settings → Secrets and variables →
++# Dependabot), never values in this file.
++version: 2
++registries:
++  artifactory-maven:
++    type: maven-repository
++    url: https://artifactory.sim.example/artifactory/maven-virtual
++    username: ${{secrets.ARTIFACTORY_USER}}
++    password: ${{secrets.ARTIFACTORY_TOKEN}}
++updates:
++  - package-ecosystem: maven
++    directory: /
++    registries:
++      - artifactory-maven
++    schedule:
++      interval: weekly
++    open-pull-requests-limit: 5

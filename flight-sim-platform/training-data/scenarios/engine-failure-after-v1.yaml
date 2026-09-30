@@ -1,0 +1,25 @@
+id: engine-failure-after-v1
+title: Engine failure after V1
+description: >
+  Engine 1 flames out shortly after V1 on a heavy departure. The trainee continues
+  the take-off, flies the engine-out procedure and returns for an overweight landing.
+airport: XFSA
+runway: "27"
+initial:
+  altitude_ft: 0
+  ias_kt: 0
+  heading_deg: 270
+  fuel_kg: 4200
+  gross_mass_kg: 22400
+  on_ground: true
+weather:
+  wind_from_deg: 250
+  wind_speed_kt: 12
+  visibility_m: 9999
+  cloud_base_ft: 2500
+  temperature_c: 18
+  qnh_hpa: 1009
+malfunctions:
+  - at_s: 38
+    id: engines.1.flameout
+tags: [engines, takeoff, engine-out, type-rating]

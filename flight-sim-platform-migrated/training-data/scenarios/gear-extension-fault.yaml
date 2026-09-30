@@ -1,0 +1,25 @@
+id: gear-extension-fault
+title: Left main gear fails to extend
+description: >
+  On final approach the left main gear stays up-locked. The trainee goes around, completes the
+  alternate (gravity) extension and lands with a gear disagree indication.
+airport: XFSB
+runway: "09"
+initial:
+  altitude_ft: 2500
+  ias_kt: 170
+  heading_deg: 90
+  fuel_kg: 2600
+  gross_mass_kg: 19800
+  on_ground: false
+weather:
+  wind_from_deg: 100
+  wind_speed_kt: 8
+  visibility_m: 9999
+  cloud_base_ft: 3000
+  temperature_c: 11
+  qnh_hpa: 1021
+malfunctions:
+  - at_s: 5
+    id: landing-gear.left-stuck-up
+tags: [landing-gear, go-around, abnormal-procedures]

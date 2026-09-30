@@ -1,0 +1,211 @@
+diff --git a/ios-api/src/main/java/com/example/flightsim/ios/IosServer.java b/ios-api/src/main/java/com/example/flightsim/ios/IosServer.java
+index 48108db..0985357 100644
+--- a/ios-api/src/main/java/com/example/flightsim/ios/IosServer.java
++++ b/ios-api/src/main/java/com/example/flightsim/ios/IosServer.java
+@@ -11,6 +11,7 @@ import com.example.flightsim.ios.servlet.DiagnosticsServlet;
+ import com.example.flightsim.ios.servlet.HealthServlet;
+ import com.example.flightsim.ios.servlet.MalfunctionServlet;
+ import com.example.flightsim.ios.servlet.ScenarioAttachmentServlet;
++import com.example.flightsim.ios.servlet.ScenarioPackServlet;
+ import com.example.flightsim.ios.servlet.ScenarioServlet;
+ import com.example.flightsim.ios.servlet.SessionSearchServlet;
+ import com.example.flightsim.ios.servlet.SnapshotServlet;
+@@ -104,6 +105,7 @@ public final class IosServer implements AutoCloseable {
+         api.addServlet(new ServletHolder(new ScenarioServlet(library)), "/api/scenarios/*");
+         api.addServlet(new ServletHolder(new ScenarioAttachmentServlet(config.trainingDataRoot().resolve("attachments"))),
+                 "/api/scenario-attachments");
++        api.addServlet(new ServletHolder(new ScenarioPackServlet(config.trainingDataRoot())), "/api/scenario-packs");
+         api.addServlet(new ServletHolder(new SessionSearchServlet(sessions)), "/api/sessions");
+         api.addServlet(new ServletHolder(new MalfunctionServlet(host.malfunctions())), "/api/malfunctions");
+         api.addServlet(new ServletHolder(new WeatherServlet(httpClient, config.metarFeed())), "/api/weather/metar");
+diff --git a/ios-api/src/main/java/com/example/flightsim/ios/servlet/ScenarioPackServlet.java b/ios-api/src/main/java/com/example/flightsim/ios/servlet/ScenarioPackServlet.java
+new file mode 100644
+index 0000000..4e7d2f8
+--- /dev/null
++++ b/ios-api/src/main/java/com/example/flightsim/ios/servlet/ScenarioPackServlet.java
+@@ -0,0 +1,49 @@
++package com.example.flightsim.ios.servlet;
++
++import com.example.flightsim.ios.JsonSupport;
++import com.example.flightsim.scenario.ScenarioPackImporter;
++import jakarta.servlet.http.HttpServlet;
++import jakarta.servlet.http.HttpServletRequest;
++import jakarta.servlet.http.HttpServletResponse;
++import java.io.IOException;
++import java.io.InputStream;
++import java.nio.file.Files;
++import java.nio.file.Path;
++import java.nio.file.StandardCopyOption;
++import java.util.List;
++import java.util.Map;
++
++/**
++ * Imports a scenario pack from another training centre: {@code POST /api/scenario-packs} with the
++ * zip as the request body. The upload is saved to a temporary file first, so a slow instructor
++ * station connection never holds the zip stream open while files are written.
++ */
++public final class ScenarioPackServlet extends HttpServlet {
++
++    private static final long serialVersionUID = 1L;
++
++    private final transient ScenarioPackImporter importer;
++
++    /**
++     * Creates the servlet.
++     *
++     * @param trainingDataRoot training data directory
++     */
++    public ScenarioPackServlet(Path trainingDataRoot) {
++        this.importer = new ScenarioPackImporter(trainingDataRoot.toFile());
++    }
++
++    @Override
++    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
++        Path upload = Files.createTempFile("scenario-pack-", ".zip");
++        try {
++            try (InputStream in = request.getInputStream()) {
++                Files.copy(in, upload, StandardCopyOption.REPLACE_EXISTING);
++            }
++            List<String> imported = importer.importPack(upload);
++            JsonSupport.write(response, Map.of("imported", imported));
++        } finally {
++            Files.deleteIfExists(upload);
++        }
++    }
++}
+diff --git a/scenario-io/pom.xml b/scenario-io/pom.xml
+index 09f3eb0..a869db2 100644
+--- a/scenario-io/pom.xml
++++ b/scenario-io/pom.xml
+@@ -34,5 +34,10 @@
+       <artifactId>commons-compress</artifactId>
+       <version>1.20</version>
+     </dependency>
++    <dependency>
++      <groupId>commons-io</groupId>
++      <artifactId>commons-io</artifactId>
++      <version>2.6</version>
++    </dependency>
+   </dependencies>
+ </project>
+diff --git a/scenario-io/src/main/java/com/example/flightsim/scenario/ScenarioPackImporter.java b/scenario-io/src/main/java/com/example/flightsim/scenario/ScenarioPackImporter.java
+new file mode 100644
+index 0000000..672a943
+--- /dev/null
++++ b/scenario-io/src/main/java/com/example/flightsim/scenario/ScenarioPackImporter.java
+@@ -0,0 +1,59 @@
++package com.example.flightsim.scenario;
++
++import java.io.File;
++import java.io.FileOutputStream;
++import java.io.IOException;
++import java.io.InputStream;
++import java.io.OutputStream;
++import java.nio.file.Files;
++import java.nio.file.Path;
++import java.util.ArrayList;
++import java.util.List;
++import java.util.zip.ZipEntry;
++import java.util.zip.ZipInputStream;
++import org.apache.commons.io.IOUtils;
++
++/**
++ * Imports a scenario pack exported by another training centre's instructor station. A pack is a
++ * zip holding {@code scenarios/<id>.yaml} files and their {@code attachments/}; files are
++ * unpacked into the training data directory, keeping the pack's layout.
++ */
++public final class ScenarioPackImporter {
++
++    private final File trainingDataRoot;
++
++    /**
++     * Creates an importer.
++     *
++     * @param trainingDataRoot training data directory holding {@code scenarios/} and {@code attachments/}
++     */
++    public ScenarioPackImporter(File trainingDataRoot) {
++        this.trainingDataRoot = trainingDataRoot;
++    }
++
++    /**
++     * Unpacks a scenario pack. Directory entries are skipped; the pack's directories already
++     * exist in every training data directory.
++     *
++     * @param pack the zip file
++     * @return the paths written, relative to the training data directory
++     * @throws IOException if the pack cannot be read or a file cannot be written
++     */
++    public List<String> importPack(Path pack) throws IOException {
++        List<String> written = new ArrayList<>();
++        try (InputStream in = Files.newInputStream(pack); ZipInputStream zip = new ZipInputStream(in)) {
++            ZipEntry entry;
++            while ((entry = zip.getNextEntry()) != null) {
++                if (entry.isDirectory()) {
++                    continue;
++                }
++                File target = new File(trainingDataRoot, entry.getName());
++                try (OutputStream out = new FileOutputStream(target)) {
++                    IOUtils.copy(zip, out);
++                }
++                written.add(entry.getName());
++            }
++        }
++        return written;
++    }
++}
+diff --git a/scenario-io/src/test/java/com/example/flightsim/scenario/ScenarioPackImporterTest.java b/scenario-io/src/test/java/com/example/flightsim/scenario/ScenarioPackImporterTest.java
+new file mode 100644
+index 0000000..5cd920f
+--- /dev/null
++++ b/scenario-io/src/test/java/com/example/flightsim/scenario/ScenarioPackImporterTest.java
+@@ -0,0 +1,50 @@
++package com.example.flightsim.scenario;
++
++import static org.junit.jupiter.api.Assertions.assertEquals;
++import static org.junit.jupiter.api.Assertions.assertTrue;
++
++import java.io.ByteArrayOutputStream;
++import java.io.IOException;
++import java.nio.charset.StandardCharsets;
++import java.nio.file.Files;
++import java.nio.file.Path;
++import java.util.List;
++import java.util.zip.ZipEntry;
++import java.util.zip.ZipOutputStream;
++import org.junit.jupiter.api.Test;
++import org.junit.jupiter.api.io.TempDir;
++
++class ScenarioPackImporterTest {
++
++    @TempDir
++    Path trainingData;
++
++    @Test
++    void unpacksScenariosAndAttachmentsKeepingTheLayout() throws IOException {
++        byte[] pack = zip(
++                "scenarios/crosswind-landing.yaml", "id: crosswind-landing\ntitle: Gusting crosswind landing\n",
++                "attachments/XFSB-RWY09-ILS.txt", "ILS 09 notes");
++
++        Files.createDirectories(trainingData.resolve("scenarios"));
++        Files.createDirectories(trainingData.resolve("attachments"));
++        Path packFile = Files.write(trainingData.resolve("pack.zip"), pack);
++
++        List<String> written = new ScenarioPackImporter(trainingData.toFile()).importPack(packFile);
++
++        assertEquals(List.of("scenarios/crosswind-landing.yaml", "attachments/XFSB-RWY09-ILS.txt"), written);
++        assertTrue(Files.readString(trainingData.resolve("scenarios/crosswind-landing.yaml")).contains("crosswind-landing"));
++        assertEquals("ILS 09 notes", Files.readString(trainingData.resolve("attachments/XFSB-RWY09-ILS.txt")));
++    }
++
++    private static byte[] zip(String... namesAndContents) throws IOException {
++        ByteArrayOutputStream bytes = new ByteArrayOutputStream();
++        try (ZipOutputStream zip = new ZipOutputStream(bytes)) {
++            for (int i = 0; i < namesAndContents.length; i += 2) {
++                zip.putNextEntry(new ZipEntry(namesAndContents[i]));
++                zip.write(namesAndContents[i + 1].getBytes(StandardCharsets.UTF_8));
++                zip.closeEntry();
++            }
++        }
++        return bytes.toByteArray();
++    }
++}

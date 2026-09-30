@@ -1,0 +1,50 @@
+{
+  "name": "Product line baseline",
+  "target": "branch",
+  "enforcement": "active",
+  "conditions": {
+    "ref_name": {
+      "include": ["~DEFAULT_BRANCH"],
+      "exclude": []
+    },
+    "repository_property": {
+      "include": [
+        {
+          "name": "product-line",
+          "source": "custom",
+          "property_values": ["flight-sim", "visual-systems", "motion", "training-services"]
+        }
+      ],
+      "exclude": []
+    }
+  },
+  "rules": [
+    {
+      "type": "pull_request",
+      "parameters": {
+        "required_approving_review_count": 1,
+        "dismiss_stale_reviews_on_push": false,
+        "require_code_owner_review": true,
+        "require_last_push_approval": false,
+        "required_review_thread_resolution": false
+      }
+    },
+    {
+      "type": "workflows",
+      "parameters": {
+        "workflows": [
+          {
+            "path": ".github/workflows/dependency-review.yml",
+            "repository_id": PLATFORM_WORKFLOWS_REPO_ID,
+            "ref": "refs/heads/main"
+          },
+          {
+            "path": ".github/workflows/msdo.yml",
+            "repository_id": PLATFORM_WORKFLOWS_REPO_ID,
+            "ref": "refs/heads/main"
+          }
+        ]
+      }
+    }
+  ]
+}

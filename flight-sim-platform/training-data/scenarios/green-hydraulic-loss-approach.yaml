@@ -1,0 +1,25 @@
+id: green-hydraulic-loss-approach
+title: Green hydraulic system loss on approach
+description: >
+  The green engine-driven pump fails on the downwind leg. The trainee works through the
+  checklist, uses the power transfer unit, and plans for gear extension on the alternate system.
+airport: XFSA
+runway: "27"
+initial:
+  altitude_ft: 3000
+  ias_kt: 190
+  heading_deg: 90
+  fuel_kg: 2100
+  gross_mass_kg: 19600
+  on_ground: false
+weather:
+  wind_from_deg: 260
+  wind_speed_kt: 8
+  visibility_m: 8000
+  cloud_base_ft: 1800
+  temperature_c: 12
+  qnh_hpa: 1016
+malfunctions:
+  - at_s: 45
+    id: hydraulics.green-pump-fail
+tags: [hydraulics, approach, abnormal-procedures]

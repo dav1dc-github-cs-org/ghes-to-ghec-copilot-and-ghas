@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.example.flightsim</groupId>
+    <artifactId>flight-sim-platform</artifactId>
+    <version>4.12.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>flight-dynamics</artifactId>
+  <name>Flight Sim :: Flight Dynamics</name>
+  <description>Six-degree-of-freedom flight model: ISA atmosphere, aerodynamic tables, equations of motion and trim.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.example.flightsim</groupId>
+      <artifactId>sim-core</artifactId>
+    </dependency>
+  </dependencies>
+</project>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.example.flightsim</groupId>
+    <artifactId>flight-sim-platform</artifactId>
+    <version>4.12.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>legacy</artifactId>
+  <name>Flight Sim :: Legacy</name>
+  <description>Components ported from the previous-generation simulator host. Kept building while they are replaced.</description>
+
+  <properties>
+    <!-- Legacy code is held to the relaxed rule set until it is replaced (see docs/adr/0007-legacy-module.md). -->
+    <flightsim.checkstyle.config>https://github-black.sim.example/raw/platform/build-standards/main/checkstyle/flightsim-checks-legacy.xml</flightsim.checkstyle.config>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.example.flightsim</groupId>
+      <artifactId>sim-core</artifactId>
+    </dependency>
+  </dependencies>
+</project>

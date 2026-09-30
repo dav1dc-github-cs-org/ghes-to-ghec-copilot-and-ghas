@@ -1,0 +1,42 @@
+name: Build migration after the move to GitHub.com
+description: Changes a repository needs so its build keeps working after it moved from github-black to GitHub.com.
+title: "Build migration: make the build work after the move to GitHub.com"
+labels: ["migration", "build"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Use this once your repository has moved from github-black to GitHub.com.
+        **Jenkins stays, SPL stays and Artifactory stays.** This issue is only about the files
+        in this repository that still point at the old server. `docs/MIGRATION.md` has the details.
+  - type: textarea
+    id: failure
+    attributes:
+      label: What fails
+      description: Paste the first error from `./mvnw -B -ntp verify` (or the Jenkins log).
+      render: text
+    validations:
+      required: true
+  - type: checkboxes
+    id: scope
+    attributes:
+      label: In scope
+      options:
+        - label: Build files that fetch anything from the old server (use the copies in build-tools/)
+        - label: SCM, URL and issue-management entries in pom.xml
+        - label: Jenkinsfile checkout URL and commit-status API URL
+        - label: CODEOWNERS teams (per-project organisations become teams in the new organisation)
+        - label: Scripts under scripts/ and URLs in python/qtg-tools/pyproject.toml
+  - type: textarea
+    id: acceptance
+    attributes:
+      label: Acceptance criteria
+      value: |
+        - `./mvnw -B -ntp verify` passes with the Checkstyle coding standard still enforced (no skipping, no weaker rules).
+        - QTG tools tests pass: `cd python/qtg-tools && python -m pytest`.
+        - No references to the old server remain in the repository, except in docs/MIGRATION.md.
+        - No changes to Artifactory, the Maven mirror, the pip index or ci/jenkins-settings.xml.
+        - No changes to Jenkins stages, and no dependency version changes.
+        - Anything platform engineering must change (Jenkins job, credentials, runners) is listed in the pull request description, not changed.
+    validations:
+      required: true

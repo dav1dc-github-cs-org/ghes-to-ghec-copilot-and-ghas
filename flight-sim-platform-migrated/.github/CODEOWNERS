@@ -1,0 +1,28 @@
+# Code owners are requested for review automatically when a pull request touches their paths.
+# The last matching pattern wins.
+
+*                               @flightsim-platform/sim-core-maintainers
+
+/sim-core/                      @flightsim-platform/sim-core-maintainers
+/legacy/                        @flightsim-platform/sim-core-maintainers
+/flight-dynamics/               @flightsim-aero/flight-model
+
+/subsystems/hydraulics/         @flightsim-systems/hydraulics-electrical
+/subsystems/electrical/         @flightsim-systems/hydraulics-electrical
+/subsystems/fuel/               @flightsim-systems/fuel-engines
+/subsystems/engines/            @flightsim-systems/fuel-engines
+/subsystems/landing-gear/       @flightsim-systems/landing-gear
+/subsystems/autopilot/          @flightsim-avionics/autoflight
+/subsystems/navigation/         @flightsim-avionics/navigation
+
+/scenario-io/                   @flightsim-ios/scenario-tools
+/training-data/                 @flightsim-ios/scenario-tools
+/ios-api/                       @flightsim-ios/instructor-station
+/data-recorder/                 @flightsim-ios/instructor-station
+
+/python/qtg-tools/              @flightsim-qualification/qtg-engineering
+
+/build-tools/                   @flightsim-platform/build-standards
+/ci/                            @flightsim-platform/build-standards
+/Jenkinsfile                    @flightsim-platform/build-standards
+/.github/                       @flightsim-platform/build-standards

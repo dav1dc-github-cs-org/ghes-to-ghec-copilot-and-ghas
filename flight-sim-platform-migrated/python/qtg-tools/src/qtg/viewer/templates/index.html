@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>FS-200 QTG Viewer</title>
+  </head>
+  <body>
+    <h1>FS-200 QTG Viewer</h1>
+    <p>Qualification test cases available to the simulator engineering team.</p>
+    <table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Reference CSV</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for test_case in test_cases %}
+        <tr>
+          <td>{{ test_case.id }}</td>
+          <td>{{ test_case.title }}</td>
+          <td>{{ test_case.reference_csv }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </body>
+</html>

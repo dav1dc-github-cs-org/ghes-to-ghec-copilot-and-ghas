@@ -1,0 +1,30 @@
+# Maven
+target/
+.flattened-pom.xml
+
+# IDEs (VS Code workspace settings in .vscode/ are shared on purpose)
+.idea/
+*.iml
+.classpath
+.project
+.settings/
+.factorypath
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+build/
+dist/
+
+# Runtime output
+*.log
+recordings/
+python/qtg-tools/results/
+
+# OS
+.DS_Store

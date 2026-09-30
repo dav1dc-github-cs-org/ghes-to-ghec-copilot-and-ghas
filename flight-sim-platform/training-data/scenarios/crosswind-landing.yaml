@@ -1,0 +1,23 @@
+id: crosswind-landing
+title: Gusting crosswind landing
+description: >
+  Visual approach and landing with a gusting crosswind at the demonstrated limit, followed by a
+  go-around from 50 ft when the instructor calls for it.
+airport: XFSB
+runway: "09"
+initial:
+  altitude_ft: 2000
+  ias_kt: 160
+  heading_deg: 90
+  fuel_kg: 2400
+  gross_mass_kg: 19500
+  on_ground: false
+weather:
+  wind_from_deg: 140
+  wind_speed_kt: 25
+  visibility_m: 9999
+  cloud_base_ft: 4000
+  temperature_c: 9
+  qnh_hpa: 1004
+malfunctions: []
+tags: [landing, crosswind, handling]

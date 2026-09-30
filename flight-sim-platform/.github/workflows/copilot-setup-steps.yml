@@ -1,0 +1,52 @@
+name: "Copilot Setup Steps"
+
+# Prepares the environment Copilot cloud agent (and Copilot code review) works in.
+# It runs on its own when this file changes, so a change can be checked on the pull request,
+# and it can be started by hand from the Actions tab.
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+  pull_request:
+    paths:
+      - .github/workflows/copilot-setup-steps.yml
+
+jobs:
+  # The job must be called copilot-setup-steps or Copilot will not pick it up.
+  copilot-setup-steps:
+    # GitHub-hosted by default. Organisation owners can point Copilot at self-hosted runners
+    # (for example ARC on the training network) or larger runners instead.
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+
+    steps:
+      # Only actions published by GitHub, pinned to a full commit SHA.
+      - name: Check out the repository with Git LFS content
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          lfs: true
+
+      - name: Set up JDK 17
+        uses: actions/setup-java@de7274f081f381c8f8158605e0321c36c376e2e6 # v6.0.1
+        with:
+          distribution: temurin
+          java-version: "17"
+          cache: maven
+
+      - name: Set up Python 3.12
+        uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.12"
+          cache: pip
+          cache-dependency-path: python/qtg-tools/requirements*.txt
+
+      - name: Warm the Maven cache
+        # Downloads plugins and dependencies from Maven Central so the agent's builds are fast.
+        # The coding standard is enforced in the agent's own builds, not in this warm-up.
+        run: ./mvnw -B -ntp -DskipTests -Dcheckstyle.skip verify
+
+      - name: Install QTG tools dependencies
+        run: pip install -r python/qtg-tools/requirements-dev.txt

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.example.flightsim</groupId>
+    <artifactId>flight-sim-platform</artifactId>
+    <version>4.12.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>scenario-io</artifactId>
+  <name>Flight Sim :: Scenario IO</name>
+  <description>Training scenario model, YAML and XML loaders, templates and scenario pack export.</description>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.example.flightsim</groupId>
+      <artifactId>sim-core</artifactId>
+    </dependency>
+    <dependency>
+      <groupId>org.yaml</groupId>
+      <artifactId>snakeyaml</artifactId>
+      <version>1.33</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-text</artifactId>
+      <version>1.9</version>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-compress</artifactId>
+      <version>1.20</version>
+    </dependency>
+  </dependencies>
+</project>

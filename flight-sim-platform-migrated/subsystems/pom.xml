@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.example.flightsim</groupId>
+    <artifactId>flight-sim-platform</artifactId>
+    <version>4.12.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>subsystems</artifactId>
+  <name>Flight Sim :: Subsystems</name>
+  <description>Aircraft systems models.</description>
+  <packaging>pom</packaging>
+
+  <modules>
+    <module>hydraulics</module>
+    <module>electrical</module>
+    <module>fuel</module>
+    <module>engines</module>
+    <module>landing-gear</module>
+    <module>autopilot</module>
+    <module>navigation</module>
+  </modules>
+
+  <dependencies>
+    <dependency>
+      <groupId>com.example.flightsim</groupId>
+      <artifactId>sim-core</artifactId>
+    </dependency>
+  </dependencies>
+</project>
